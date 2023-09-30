@@ -17,43 +17,24 @@ import TableCell from '@mui/material/TableCell';
 //   }
 // })
 
-const customers = [
-  {
-    id: 1,
-    image: 'https://placehold.it/64',
-    name: '이성운',
-    birthday: 550101,
-    gender: '남자',
-    job: '교수'
-  },
-  {
-    id: 2,
-    image: 'https://placehold.it/64',
-    name: '홍길동',
-    birthday: 550101,
-    gender: '남자',
-    job: '학생'
-  },
-  {
-    id: 3,
-    image: 'https://placehold.it/64',
-    name: '이순신',
-    birthday: 550101,
-    gender: '남자',
-    job: '군인'
-  },
-  {
-    id: 4,
-    image: 'https://placehold.it/64',
-    name: '성춘향',
-    birthday: 550101,
-    gender: '여자',
-    job: '프로그래머'
-  }
-]
-
 function App() {
   // const { classes } = this.props;
+  state = {
+    customers: ""
+  };
+
+  componentDidMount() {
+    this.callApi()
+      .then(res => this.setState({customers: res}))
+      .catch(err => console.log(err));
+  };
+
+  callApi = async () => {
+    const response = await fetch('/api/customers');
+    const body = await response.json();
+    return body;
+  };
+
   return (
     // <Paper>
       <Table>
@@ -68,7 +49,7 @@ function App() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {customers.map(c => { return (<Customer key={c.id} id={c.id} image={c.image} name={c.name} birthday={c.birthday} gender={c.gender} job={c.job} />); })}
+          {this.state.customers.map(c => { return (<Customer key={c.id} id={c.id} image={c.image} name={c.name} birthday={c.birthday} gender={c.gender} job={c.job} />); })}
         </TableBody>
       </Table>
     // </Paper>
