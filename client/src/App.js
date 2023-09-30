@@ -1,3 +1,4 @@
+import React, {Component} from 'react';
 import './App.css';
 import Customer from './components/Customer';
 import Table from '@mui/material/Table';
@@ -17,26 +18,27 @@ import TableCell from '@mui/material/TableCell';
 //   }
 // })
 
-function App() {
+class App extends Component {
   // const { classes } = this.props;
   state = {
     customers: ""
-  };
+  }
 
   componentDidMount() {
     this.callApi()
-      .then(res => this.setState({customers: res}))
+      .then(res => this.setState({ customers: res }))
       .catch(err => console.log(err));
-  };
+  }
 
   callApi = async () => {
     const response = await fetch('/api/customers');
     const body = await response.json();
     return body;
-  };
+  }
 
-  return (
-    // <Paper>
+  render() {
+    return (
+      // <Paper>
       <Table>
         <TableHead>
           <TableRow>
@@ -52,8 +54,9 @@ function App() {
           {this.state.customers.map(c => { return (<Customer key={c.id} id={c.id} image={c.image} name={c.name} birthday={c.birthday} gender={c.gender} job={c.job} />); })}
         </TableBody>
       </Table>
-    // </Paper>
-  );
+      // </Paper>
+    );
+  }
 }
 
 export default App;
