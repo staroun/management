@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import './App.css';
 import Customer from './components/Customer';
 import Table from '@mui/material/Table';
@@ -51,7 +51,8 @@ class App extends Component {
           </TableRow>
         </TableHead>
         <TableBody>
-          {this.state.customers.map(c => { return (<Customer key={c.id} id={c.id} image={c.image} name={c.name} birthday={c.birthday} gender={c.gender} job={c.job} />); })}
+          {this.state.customers ?
+            this.state.customers.map(c => { return (<Customer key={c.id} id={c.id} image={c.image} name={c.name} birthday={c.birthday} gender={c.gender} job={c.job} />); }) : ""}
         </TableBody>
       </Table>
       // </Paper>
