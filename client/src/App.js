@@ -6,6 +6,7 @@ import TableHead from '@mui/material/TableHead';
 import TableBody from '@mui/material/TableBody';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
+import CircularProgress from '@mui/material/CircularProgress';
 // import { withStyles } from '@mui/styles';
 // import Paper from '@mui/material';
 
@@ -15,16 +16,20 @@ import TableCell from '@mui/material/TableCell';
 //   },
 //   table: {
 //     minWidth: 1080
-//   }
+//   },
+//   progress: {
+//      margin: ThemeContext.spacing.unit * 2
+//  }
 // })
 
 class App extends Component {
-  // const { classes } = this.props;
   state = {
-    customers: ""
+    customers: "",
+    completed: 0
   }
 
   componentDidMount() {
+    this.timer = setInterval(this.progress, 20);
     this.callApi()
       .then(res => this.setState({ customers: res }))
       .catch(err => console.log(err));
@@ -34,6 +39,11 @@ class App extends Component {
     const response = await fetch('/api/customers');
     const body = await response.json();
     return body;
+  }
+
+  progress = () => {
+    const { completed } = this.state;
+    this.setState({completed: completed >= 100 ? 0 : completed + 1 });
   }
 
   render() {
@@ -52,7 +62,12 @@ class App extends Component {
         </TableHead>
         <TableBody>
           {this.state.customers ?
-            this.state.customers.map(c => { return (<Customer key={c.id} id={c.id} image={c.image} name={c.name} birthday={c.birthday} gender={c.gender} job={c.job} />); }) : ""}
+            this.state.customers.map(c => { return (<Customer key={c.id} id={c.id} image={c.image} name={c.name} birthday={c.birthday} gender={c.gender} job={c.job} />); }) :
+            <TableRow>
+              <TableCell colspan="6" align="center">
+                <CircularProgress variant="determinate" value={this.state.completed}/>
+              </TableCell>
+              </TableRow>}
         </TableBody>
       </Table>
       // </Paper>
